@@ -40,6 +40,7 @@ export default function CreateAssignmentPage() {
     updateQuestionType,
     createNewAssignment,
     isLoading,
+    error,
   } = useAssignmentStore();
 
   const [dragActive, setDragActive] = useState(false);
@@ -117,9 +118,9 @@ export default function CreateAssignmentPage() {
     <>
       <TopBar title="Create Assignment" backHref="/assignments" />
 
-      <div className="p-4 md:p-8 max-w-3xl mx-auto">
+      <div className="p-4 md:p-8 max-w-4xl mx-auto">
         {/* Page Header */}
-        <div className="mb-6 animate-fade-in">
+        <div className="mb-8 animate-fade-in">
           <h1 className="text-2xl md:text-3xl font-bold text-primary mb-1.5">Create Assignment</h1>
           <p className="text-sm text-subtext">Set up a new AI-powered question paper for your students</p>
         </div>
@@ -132,9 +133,10 @@ export default function CreateAssignmentPage() {
         </div>
 
         {/* Form Card */}
-        <div className="bg-white rounded-2xl border border-border shadow-sm p-6 md:p-8 animate-slide-up">
+        <div className="bg-white rounded-2xl border border-border shadow-sm p-6 md:p-10 animate-slide-up">
+          <div className="space-y-8">
           {/* Section Header */}
-          <div className="mb-8">
+          <div>
             <div className="flex items-center gap-3 mb-1">
               <div className="w-8 h-8 bg-primary/5 rounded-lg flex items-center justify-center">
                 <FileText size={16} className="text-primary" />
@@ -145,7 +147,7 @@ export default function CreateAssignmentPage() {
           </div>
 
           {/* Title */}
-          <div className="mb-5">
+          <div>
             <label className="block text-sm font-semibold text-primary mb-2">Assignment Title</label>
             <input
               type="text"
@@ -157,7 +159,7 @@ export default function CreateAssignmentPage() {
           </div>
 
           {/* Subject & Class in a row */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
               <label className="block text-sm font-semibold text-primary mb-2">Subject</label>
               <input
@@ -181,7 +183,7 @@ export default function CreateAssignmentPage() {
           </div>
 
           {/* File Upload */}
-          <div className="mb-5">
+          <div>
             <label className="block text-sm font-semibold text-primary mb-2">Upload Reference (Optional)</label>
             <div
               onDragEnter={handleDrag}
@@ -236,7 +238,7 @@ export default function CreateAssignmentPage() {
           </div>
 
           {/* Due Date */}
-          <div className="mb-8">
+          <div>
             <label className="block text-sm font-semibold text-primary mb-2">Due Date</label>
             <div className="relative">
               <input
@@ -259,10 +261,10 @@ export default function CreateAssignmentPage() {
           </div>
 
           {/* Divider */}
-          <div className="border-t border-border mb-8" />
+          <div className="border-t border-border" />
 
           {/* Question Types Section */}
-          <div className="mb-8">
+          <div>
             <div className="flex items-center gap-3 mb-5">
               <div className="w-8 h-8 bg-orange-50 rounded-lg flex items-center justify-center">
                 <Sparkles size={16} className="text-orange-500" />
@@ -274,14 +276,14 @@ export default function CreateAssignmentPage() {
             </div>
 
             {/* Desktop Table Header */}
-            <div className="hidden sm:grid grid-cols-[1fr_auto_90px_90px] gap-3 mb-3 px-1">
+            <div className="hidden sm:grid grid-cols-[1fr_auto_90px_90px] gap-3 mb-4 px-1">
               <span className="text-[11px] text-subtext font-semibold uppercase tracking-wide">Question Type</span>
               <span />
               <span className="text-[11px] text-subtext font-semibold uppercase tracking-wide text-center">Questions</span>
               <span className="text-[11px] text-subtext font-semibold uppercase tracking-wide text-center">Marks</span>
             </div>
 
-            <div className="space-y-2.5">
+            <div className="space-y-3">
               {formData.questionTypes.map((qt, index) => (
                 <div
                   key={index}
@@ -430,7 +432,7 @@ export default function CreateAssignmentPage() {
             </button>
 
             {/* Totals */}
-            <div className="flex justify-end mt-5 gap-6 text-sm text-subtext bg-gray-50 rounded-xl px-4 py-3 border border-border/50">
+            <div className="flex justify-end mt-6 gap-6 text-sm text-subtext bg-gray-50 rounded-xl px-4 py-3 border border-border/50">
               <span>Total Questions: <strong className="text-primary font-semibold">{totalQuestions}</strong></span>
               <span>Total Marks: <strong className="text-primary font-semibold">{totalMarks}</strong></span>
             </div>
@@ -441,7 +443,7 @@ export default function CreateAssignmentPage() {
           </div>
 
           {/* Additional Instructions */}
-          <div className="mb-2">
+          <div>
             <label className="block text-sm font-semibold text-primary mb-2">
               Additional Instructions (Optional)
             </label>
@@ -456,7 +458,14 @@ export default function CreateAssignmentPage() {
               <Sparkles size={16} className="absolute right-3.5 bottom-3.5 text-subtext/20" />
             </div>
           </div>
+          </div>
         </div>
+
+        {error && (
+          <div className="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {error}
+          </div>
+        )}
 
         {/* Navigation Buttons */}
         <div className="flex items-center justify-between mt-8 mb-6">

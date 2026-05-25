@@ -3,7 +3,10 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
 import { useAssignmentStore } from '@/store/useAssignmentStore';
 
-const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:5000/ws';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '');
+const WS_URL =
+  process.env.NEXT_PUBLIC_WS_URL ||
+  (API_BASE ? `${API_BASE.replace(/^http/i, 'ws')}/ws` : 'ws://localhost:5000/ws');
 
 export function useWebSocket() {
   const wsRef = useRef<WebSocket | null>(null);

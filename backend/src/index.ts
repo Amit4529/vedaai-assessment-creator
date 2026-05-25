@@ -16,10 +16,20 @@ async function main() {
   const server = createServer(app);
 
   // Middleware — flexible CORS
+  const normalizeOrigins = (rawList: string[]) =>
+    rawList
+      .map((entry) => entry.trim())
+      .filter(Boolean)
+      .flatMap((entry) => {
+        if (/^https?:\/\//i.test(entry)) return [entry];
+        if (entry.includes('localhost')) return [`http://${entry}`, `https://${entry}`];
+        return [`https://${entry}`];
+      });
+
   const corsOrigin =
     env.NODE_ENV !== 'production'
-      ? true                                       // allow any origin in dev
-      : env.FRONTEND_URL.split(',').map(s => s.trim()); // comma-separated whitelist in prod
+      ? true // allow any origin in dev
+      : normalizeOrigins(env.FRONTEND_URL.split(',')); // comma-separated whitelist in prod
 
   app.use(cors({
     origin: corsOrigin,
