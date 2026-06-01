@@ -4,7 +4,7 @@ import * as path from 'path';
 
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
-const apiKey = process.env.GEMINI_API_KEY || 'AIzaSyDXyS5IBuJULRkI2xSD2pUv6sbCNdK7bac';
+const apiKey = process.env.GEMINI_API_KEY;
 console.log('Testing with API Key:', apiKey);
 
 const models = [
